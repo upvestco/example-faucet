@@ -20,6 +20,9 @@ def send_eth(address, ip):
 
 
 def greylisted(address, ip):
+    if ip == '213.61.201.242':
+        # perma-whitelist upvest office IP
+        return None
     qs = DonationRequest.objects.filter(address=address) | DonationRequest.objects.filter(ip=ip)
     cooldown = timedelta(seconds=settings.GREYLIST_COOLDOWN)
     cooldown_at = timezone.now() - cooldown
