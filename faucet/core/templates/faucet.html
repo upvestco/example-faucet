@@ -1,0 +1,78 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upvest Ropsten Faucet</title>
+    <link rel="icon" href="/static/img/favicon.png" type="image/png" sizes="16x16">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+</head>
+<body>
+
+    <nav class="navbar static-top">
+      <div class="container text-white">
+        <h1>Upvest Ropsten Faucet</h1>
+      </div>
+    </nav>
+
+    <header class="masthead text-center">
+      <div class="overlay"></div>
+      <div class="container">
+        <div class="row">
+          <div class="col-xl-9 mx-auto">
+            <h3 class="mb-5">Aquire you some ETH for great good!</h3>
+          </div>
+          {% if messages %}
+            <div class="col-md-10 col-lg-8 col-xl-7 mx-auto ">
+              {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} {% if message.tags == 'error' %}alert-danger{% endif %}">
+                  {{ message }}
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+          {% endif %}
+          <div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
+            <form method="post">
+              {% csrf_token %}
+              <div class="form-row">
+                <div class="col-12 col-md-9 mb-2 mb-md-0">
+                  <input type="text" name="address" value="{{ address }}" class="form-control form-control-lg" placeholder="Enter your wallet address">
+                </div>
+                <div class="col-12 col-md-3">
+                  <button type="submit" class="btn btn-block btn-lg btn-primary">Send</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
+            This will send 0.01 ETH to the given address.
+            <br/> The faucet wallet currently has a balance of {{ balance }}ETH
+            <br/>Feel free to donate to the faucet wallet, 0xf9b44ba370cafc6a7af77d0bdb0d50106823d91b
+          </div>
+          {% if tx %}
+            <div class="col-md-10 col-lg-8 col-xl-7 mx-auto alert alert-primary">
+              Success! 0.01 ETH has been sent to {{address}}.
+              Transaction is
+              <a href='https://ropsten.etherscan.io/tx/{{ tx.txhash }}'>
+                {{ tx.txhash }}
+              </a>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </header>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+</body>
+</html>

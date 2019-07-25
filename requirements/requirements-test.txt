@@ -1,0 +1,4 @@
+-r requirements.txt
+pytest==4.4.0
+pytest-django==3.4.8
+safety

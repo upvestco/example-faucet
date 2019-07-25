@@ -1,0 +1,14 @@
+doc-warnings: no
+uses:
+  - django
+  - celery
+requirements:
+  - requirements/requirements.txt
+
+pylint:
+  disable:
+     - C0111
+
+pep257:
+  disable:
+     - D210

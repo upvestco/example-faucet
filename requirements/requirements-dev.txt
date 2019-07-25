@@ -1,0 +1,4 @@
+-r requirements-test.txt
+django-extensions==2.1.4
+pre-commit==1.10.5
+prospector==1.1.6.2
