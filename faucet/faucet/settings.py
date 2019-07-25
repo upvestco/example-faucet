@@ -42,7 +42,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'
+MESSAGE_STORAGE = "django.contrib.messages.storage.cookie.CookieStorage"
 
 ROOT_URLCONF = "faucet.urls"
 TEMPLATES = [
@@ -74,9 +74,7 @@ DJANGO_APPS = [
     "django.contrib.staticfiles",
 ]
 LIB_APPS = ["django_celery_beat"]
-PROJECT_APPS = [
-    "core",
-]
+PROJECT_APPS = ["core"]
 
 INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS + LIB_APPS
 
@@ -88,13 +86,13 @@ if DEBUG:
 # Upvest client settings
 # ---------
 
-UPVEST_OAUTH_CLIENT_ID = env.str('UPVEST_OAUTH_CLIENT_ID')
-UPVEST_OAUTH_CLIENT_SECRET = env.str('UPVEST_OAUTH_CLIENT_SECRET')
-UPVEST_BACKEND = env.str('UPVEST_BACKEND', 'https://api.playground.upvest.co/')
-UPVEST_USERNAME = env.str('UPVEST_USERNAME')
-UPVEST_PASSWORD = env.str('UPVEST_PASSWORD')
-UPVEST_WALLET_ID = env.str('UPVEST_WALLET_ID')
-ASSET_ID = 'deaaa6bf-d944-57fa-8ec4-2dd45d1f5d3f'  # Ethereum (Ropsten)
+UPVEST_OAUTH_CLIENT_ID = env.str("UPVEST_OAUTH_CLIENT_ID")
+UPVEST_OAUTH_CLIENT_SECRET = env.str("UPVEST_OAUTH_CLIENT_SECRET")
+UPVEST_BACKEND = env.str("UPVEST_BACKEND", "https://api.playground.upvest.co/")
+UPVEST_USERNAME = env.str("UPVEST_USERNAME")
+UPVEST_PASSWORD = env.str("UPVEST_PASSWORD")
+UPVEST_WALLET_ID = env.str("UPVEST_WALLET_ID")
+ASSET_ID = "deaaa6bf-d944-57fa-8ec4-2dd45d1f5d3f"  # Ethereum (Ropsten)
 
 
 # ---------

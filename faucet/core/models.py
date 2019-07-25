@@ -1,7 +1,9 @@
-from django.db import models
 from datetime import timedelta
-from django.utils import timezone
+
 from django.conf import settings
+from django.db import models
+from django.utils import timezone
+
 from .utils import get_wallet
 
 
@@ -10,24 +12,22 @@ def send_eth(address, ip):
 
     wallet = get_wallet()
 
-    quantity = int(0.01 * (10**18))
-    fee = int(0.0001 * (10**18))
+    quantity = int(0.01 * (10 ** 18))
+    fee = int(0.0001 * (10 ** 18))
     settings.ASSET_ID
-    return wallet.transactions.create(
-        settings.UPVEST_PASSWORD, settings.ASSET_ID, quantity, fee, address
-    )
-
+    return wallet.transactions.create(settings.UPVEST_PASSWORD, settings.ASSET_ID, quantity, fee, address)
 
 
 def greylisted(address, ip):
-    if ip == '213.61.201.242':
+    if ip == "213.61.201.242":
         # perma-whitelist upvest office IP
         return None
     qs = DonationRequest.objects.filter(address=address) | DonationRequest.objects.filter(ip=ip)
     cooldown = timedelta(seconds=settings.GREYLIST_COOLDOWN)
     cooldown_at = timezone.now() - cooldown
-    latest_request = qs.filter(requested__gte=cooldown_at).order_by('-requested').first()
+    latest_request = qs.filter(requested__gte=cooldown_at).order_by("-requested").first()
     return None if latest_request is None else (latest_request.requested + cooldown)
+
 
 class DonationRequest(models.Model):
 
