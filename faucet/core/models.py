@@ -14,7 +14,6 @@ def send_eth(address, ip):
 
     quantity = int(0.01 * (10 ** 18))
     fee = int(0.0001 * (10 ** 18))
-    settings.ASSET_ID
     return wallet.transactions.create(settings.UPVEST_PASSWORD, settings.ASSET_ID, quantity, fee, address)
 
 
