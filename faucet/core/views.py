@@ -36,6 +36,8 @@ class FaucetView(View):
             # the "API" version
             ip = _get_client_ip(request)
             address = kwargs["address"]
+            if asset is None:
+                return JsonResponse({"message": "You must specify an asset code to send"}, status=400)
 
             for skip_header in settings.WHITELISTED_HEADERS:
                 header = "HTTP_%s" % skip_header.replace("-", "_")

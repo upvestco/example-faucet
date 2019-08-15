@@ -17,7 +17,7 @@
     wallet_id: 7ea3b892-2e69-4f60-b731-2529234b03da
     wallet_address: mxavxGg2ruMgoCf5u4JVTRwcEXD6zPNsTC
     sending_amount: '0.00010'
-    visible: true
+    visible: false
 - model: core.faucet
   pk: 3
   fields:

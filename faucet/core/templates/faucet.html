@@ -13,7 +13,7 @@
 
     <nav class="navbar static-top">
       <div class="container text-white">
-        <h1>Upvest Ropsten Faucet</h1>
+        <h1>Upvest Faucets</h1>
       </div>
     </nav>
 
@@ -27,6 +27,7 @@
         <div class="row">
           <div class="col-xl-9 mx-auto">
             <h3 class="mb-5">Use this faucet to get some {{ faucet.asset_code }}!</h3>
+            <p>Upvest asset id: {{ faucet.asset_id }}</p>
           </div>
           {% if messages %}
             <div class="col-md-10 col-lg-8 col-xl-7 mx-auto ">
