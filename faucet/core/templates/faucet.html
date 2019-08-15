@@ -17,12 +17,11 @@
       </div>
     </nav>
 
-    <header class="masthead text-center">
       <div class="overlay"></div>
       <div class="container">
         <div class="row">
           <div class="col-xl-9 mx-auto">
-            <h3 class="mb-5">Acquire you some ETH for great good!</h3>
+            <h3 class="mb-5">Use this faucet to get some {{ faucet.asset_code }}!</h3>
           </div>
           {% if messages %}
             <div class="col-md-10 col-lg-8 col-xl-7 mx-auto ">
@@ -39,7 +38,9 @@
               {% csrf_token %}
               <div class="form-row">
                 <div class="col-12 col-md-9 mb-2 mb-md-0">
-                  <input type="text" name="address" value="{{ address }}" class="form-control form-control-lg" placeholder="Enter your wallet address">
+                  <input type="hidden" name='asset' value='{{ faucet.asset_code }}'>
+                  <input type="text" name="address" value="{{ address }}"
+                         class="form-control form-control-lg" placeholder="Enter your wallet address">
                 </div>
                 <div class="col-12 col-md-3">
                   <button type="submit" class="btn btn-block btn-lg btn-primary">Send</button>
@@ -50,13 +51,13 @@
         </div>
         <div class="row">
           <div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
-            This will send 0.01 ETH to the given address.
-            <br/> The faucet wallet currently has a balance of {{ balance }}ETH
-            <br/>Feel free to donate to the faucet wallet, 0xf9b44Ba370CAfc6a7AF77D0BDB0d50106823D91b
+            This will send {{ faucet.sending_amount.normalize }} {{ faucet.asset_code }} to the given address.
+            <br/> The faucet wallet currently has a balance of {{ faucet.balance }}{{ faucet.asset_code }}
+            <br/>Feel free to donate to the faucet wallet, {{ faucet.wallet_address }}
           </div>
           {% if tx %}
             <div class="col-md-10 col-lg-8 col-xl-7 mx-auto alert alert-primary">
-              Success! 0.01 ETH has been sent to {{address}}.
+              Success! {{ faucet.sending_amount.normalize }} {{ faucet.asset_code }} has been sent to {{ address }}.
               Transaction is
               <a href='https://ropsten.etherscan.io/tx/{{ tx.txhash }}'>
                 {{ tx.txhash }}
@@ -64,8 +65,8 @@
             </div>
           {% endif %}
         </div>
+
       </div>
-    </header>
 
 </body>
 </html>

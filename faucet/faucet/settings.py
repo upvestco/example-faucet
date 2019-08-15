@@ -14,9 +14,6 @@ DEBUG = env.bool("DEBUG", False)
 SECRET_KEY = env("SECRET_KEY")
 USE_SENTRY = env.bool("USE_SENTRY", False)
 
-_default_cooldown = 60 * 60 * 24  # 24 hours
-GREYLIST_COOLDOWN = env.int("GREYLIST_COOLDOWN", _default_cooldown)
-
 # ---------
 # Basic Django settings
 # ---------
@@ -91,9 +88,17 @@ UPVEST_OAUTH_CLIENT_SECRET = env.str("UPVEST_OAUTH_CLIENT_SECRET")
 UPVEST_BACKEND = env.str("UPVEST_BACKEND", "https://api.playground.upvest.co/")
 UPVEST_USERNAME = env.str("UPVEST_USERNAME")
 UPVEST_PASSWORD = env.str("UPVEST_PASSWORD")
-UPVEST_WALLET_ID = env.str("UPVEST_WALLET_ID")
-ASSET_ID = "deaaa6bf-d944-57fa-8ec4-2dd45d1f5d3f"  # Ethereum (Ropsten)
 
+# ---------
+# Greylisting
+# ---------
+
+GREYLIST_ENABLED = env.bool("GREYLIST_ENABLED", True)
+_default_cooldown = 60 * 60 * 24  # 24 hours
+GREYLIST_COOLDOWN = env.int("GREYLIST_COOLDOWN", _default_cooldown)
+
+WHITELISTED_HEADERS = env.list("WHITELISTED_HEADERS", default=[])
+WHITELISTED_IPS = env.list("WHITELISTED_IPS", default=["127.0.0.1"])
 
 # ---------
 # Hosting information

@@ -1,6 +1,6 @@
-export SECRET_KEY=jRsSxeiPjBbQddi2ZT4uDEGvwg87Bs
+export SECRET_KEY=seekretquai
 export DEBUG=True
-export DATABASE_URL=postgres://faucet:JVr8B9KjRneFtYSQ9BaSQk7C5LdGE9@localhost:6041/faucet
+export DATABASE_URL=postgres://faucet:faucet@localhost:6041/faucet
 export CELERY_BROKER_URL='amqp://guest:guest@127.0.0.1:6042'
 export ALLOWED_HOSTS='*'
 

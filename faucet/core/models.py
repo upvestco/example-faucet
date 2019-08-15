@@ -3,29 +3,87 @@ from datetime import timedelta
 from django.conf import settings
 from django.db import models
 from django.utils import timezone
+from decimal import Decimal
 
-from .utils import get_wallet
 
-
-def send_eth(address, ip):
-    DonationRequest.objects.create(address=address, ip=ip)
-
-    wallet = get_wallet()
-
-    quantity = int(0.01 * (10 ** 18))
-    fee = int(0.0001 * (10 ** 18))
-    return wallet.transactions.create(settings.UPVEST_PASSWORD, settings.ASSET_ID, quantity, fee, address)
+from upvest.clientele import UpvestClienteleAPI
 
 
 def greylisted(address, ip):
-    if ip == "213.61.201.242":
-        # perma-whitelist upvest office IP
+    if not settings.GREYLIST_ENABLED:
         return None
+
+    if ip in settings.WHITELISTED_IPS:
+        return None
+
     qs = DonationRequest.objects.filter(address=address) | DonationRequest.objects.filter(ip=ip)
     cooldown = timedelta(seconds=settings.GREYLIST_COOLDOWN)
     cooldown_at = timezone.now() - cooldown
     latest_request = qs.filter(requested__gte=cooldown_at).order_by("-requested").first()
     return None if latest_request is None else (latest_request.requested + cooldown)
+
+
+class Faucet(models.Model):
+
+    asset_code = models.CharField(max_length=12)
+    """ The short code of the asset type, eg 'BTC' """
+
+    name = models.CharField(max_length=120)
+    """ The display name for this asset """
+
+    asset_id = models.UUIDField(unique=True)
+    """ The ID of the asset in the Upvest API """
+
+    wallet_id = models.UUIDField()
+    """ The ID of the wallet in the Upvest API """
+
+    wallet_address = models.CharField(max_length=64)
+    """ The public address of the wallet """
+
+    sending_amount = models.DecimalField(max_digits=20, decimal_places=5)
+    """ How much of the asset should sent on each sending request """
+
+    visible = models.BooleanField()
+    """ Whether to include this asset or not, useful to turn off an asset """
+
+    def send(self, receive_address, ip):
+        DonationRequest.objects.create(address=receive_address, ip=ip)
+
+        wallet = self._get_wallet()
+        balance = self._get_balance()
+
+        # the internal representation is the more human-friendly decimal version
+        # but the API accepts only whole integers
+        quantity = int(self.sending_amount * (10 ** balance["exponent"]))
+        fee = quantity // 10000
+        return wallet.transactions.create(settings.UPVEST_PASSWORD, str(self.asset_id), quantity, fee, receive_address)
+
+    @property
+    def balance(self):
+        bal = self._get_balance()
+        balance = Decimal(bal["amount"]) / (10 ** bal["exponent"])
+        return balance.normalize()
+
+    def _get_balance(self):
+        wallet = self._get_wallet()
+        for bal in wallet.balances:
+            if bal["asset_id"] == str(self.asset_id):
+                return bal
+        raise ValueError("No balance for asset %s" % self.asset_id)
+
+    def _get_wallet(self):
+        api = UpvestClienteleAPI(
+            settings.UPVEST_OAUTH_CLIENT_ID,
+            settings.UPVEST_OAUTH_CLIENT_SECRET,
+            settings.UPVEST_USERNAME,
+            settings.UPVEST_PASSWORD,
+            base_url=settings.UPVEST_BACKEND,
+        )
+        return api.wallets.get(str(self.wallet_id))
+
+    def __str__(self):
+        visible = "visible" if self.visible else "not visible"
+        return "Sending %s %s (%s)" % (self.sending_amount, self.asset_code, visible)
 
 
 class DonationRequest(models.Model):

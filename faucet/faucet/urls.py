@@ -6,9 +6,11 @@ from django.views.decorators.csrf import csrf_exempt
 from core.views import FaucetView
 
 urlpatterns = [
-    re_path(r"^$", csrf_exempt(FaucetView.as_view(curl=False)), name="faucet"),
+    re_path(r"^(?P<asset>[a-zA-Z]+)?$", csrf_exempt(FaucetView.as_view(curl=False)), name="faucet"),
     re_path(
-        r"^send/0x(?P<address>[a-fA-F0-9]{30,40})$", csrf_exempt(FaucetView.as_view(curl=True)), name="faucet_curl"
+        r"^send/0x(?P<address>[a-fA-F0-9]{30,40})/(?P<asset>[a-fA-Z]+)$",
+        csrf_exempt(FaucetView.as_view(curl=True)),
+        name="faucet_curl",
     ),
 ]
 

@@ -1,25 +1,14 @@
 import re
-from decimal import Decimal
 
-from django.conf import settings
 from django.contrib import messages
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.utils.timesince import timeuntil
 from django.views import View
 
-from .models import greylisted, send_eth
-from .utils import get_wallet
+from .models import greylisted, Faucet
 
 WALLET_RE = re.compile(r"^0x[a-fA-F0-9]{30,40}$")
-
-
-def _get_balance():
-    wallet = get_wallet()
-    for bal in wallet.balances:
-        if bal["asset_id"] == settings.ASSET_ID:
-            return Decimal(bal["amount"]) / (10 ** bal["exponent"])
-    return "NOT FOUND"
 
 
 def _get_client_ip(request):
@@ -36,7 +25,14 @@ class FaucetView(View):
     curl = False
 
     def get(self, request, *args, **kwargs):
+        asset = kwargs.get("asset")
+        if asset is not None:
+            faucet = get_object_or_404(Faucet, asset_code__iexact=asset)
+        else:
+            faucet = Faucet.objects.first()
+
         if self.curl:
+            # the "API" version
             ip = _get_client_ip(request)
             address = kwargs["address"]
 
@@ -49,16 +45,23 @@ class FaucetView(View):
                     {"message": "You are greylisted for another %s" % timeuntil(cooldown_at)}, status=403
                 )
             else:
-                tx = send_eth(address, ip)
+                tx = faucet.send(address, ip)
                 return JsonResponse(
                     {"message": "Request received successfully. 0.01ETH will be sent to %s" % address, "tx": tx.txhash},
                     status=200,
                 )
-        return render(request, "faucet.html", context={"balance": _get_balance()})
+
+        # also list other faucets to get links to other assets other than the chosen one
+        faucets = Faucet.objects.filter(visible=True).order_by("asset_code")
+
+        return render(request, "faucet.html", context={"faucets": faucets, "faucet": faucet})
 
     def post(self, request, *args, **kwargs):
         address = request.POST.get("address")
-        ctx = {"address": address, "balance": _get_balance()}
+        faucet = get_object_or_404(Faucet, asset_code__iexact=request.POST.get("asset"))
+
+        faucets = Faucet.objects.filter(visible=True).order_by("asset_code")
+        ctx = {"address": address, "faucets": faucets, "faucet": faucet}
         if not address:
             messages.error(request, "You must supply a wallet address")
         elif not WALLET_RE.match(address):
@@ -69,7 +72,7 @@ class FaucetView(View):
             if cooldown_at:
                 messages.warning(request, "You are greylisted for another %s" % timeuntil(cooldown_at))
             else:
-                tx = send_eth(address, ip)
+                tx = faucet.send(address, ip)
                 messages.info(request, "Request received successfully. 0.01ETH will be sent to %s" % address)
                 ctx["tx"] = tx
 
