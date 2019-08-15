@@ -23,7 +23,8 @@ TIME_ZONE = "UTC"
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
-
+# 100000000000000000
+# 100000000000000
 STATIC_URL = "/static/"
 STATIC_ROOT = env.str("STATIC_ROOT", os.path.join(BASE_DIR, "static"))
 

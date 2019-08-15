@@ -55,7 +55,7 @@ class Faucet(models.Model):
         # the internal representation is the more human-friendly decimal version
         # but the API accepts only whole integers
         quantity = int(self.sending_amount * (10 ** balance["exponent"]))
-        fee = quantity // 10000
+        fee = quantity // 1000
         return wallet.transactions.create(settings.UPVEST_PASSWORD, str(self.asset_id), quantity, fee, receive_address)
 
     @property
