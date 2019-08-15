@@ -1,4 +1,5 @@
 import re
+from django.conf import settings
 
 from django.contrib import messages
 from django.http import JsonResponse
@@ -36,18 +37,26 @@ class FaucetView(View):
             ip = _get_client_ip(request)
             address = kwargs["address"]
 
-            if "HTTP_X_UPVEST_SKIP_GREYLIST_PLEASE" in request.META:
-                cooldown_at = None
+            for skip_header in settings.WHITELISTED_HEADERS:
+                header = "HTTP_%s" % skip_header.replace("-", "_")
+                if header in request.META:
+                    cooldown_at = None
+                    break
             else:
                 cooldown_at = greylisted(address, ip)
+
             if cooldown_at:
                 return JsonResponse(
                     {"message": "You are greylisted for another %s" % timeuntil(cooldown_at)}, status=403
                 )
             else:
                 tx = faucet.send(address, ip)
+                amount = "%s%s" % (faucet.sending_amount.normalize(), faucet.asset_code)
                 return JsonResponse(
-                    {"message": "Request received successfully. 0.01ETH will be sent to %s" % address, "tx": tx.txhash},
+                    {
+                        "message": "Request received successfully. %s will be sent to %s" % (amount, address),
+                        "tx": tx.txhash,
+                    },
                     status=200,
                 )
 
@@ -73,7 +82,9 @@ class FaucetView(View):
                 messages.warning(request, "You are greylisted for another %s" % timeuntil(cooldown_at))
             else:
                 tx = faucet.send(address, ip)
-                messages.info(request, "Request received successfully. 0.01ETH will be sent to %s" % address)
+
+                amount = "%s%s" % (faucet.sending_amount.normalize(), faucet.asset_code)
+                messages.info(request, "Request received successfully. %s will be sent to %s" % (amount, address))
                 ctx["tx"] = tx
 
         return render(request, "faucet.html", context=ctx)

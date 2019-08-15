@@ -20,6 +20,11 @@
       <div class="overlay"></div>
       <div class="container">
         <div class="row">
+          {% for faucet in faucets %}
+          <a class='btn btn-info' href="{% url 'faucet' faucet.asset_code %}">{{ faucet.asset_code }} {{ faucet.name }}</a>
+          {% endfor %}
+        </div>
+        <div class="row">
           <div class="col-xl-9 mx-auto">
             <h3 class="mb-5">Use this faucet to get some {{ faucet.asset_code }}!</h3>
           </div>
