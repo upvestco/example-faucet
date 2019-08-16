@@ -40,8 +40,11 @@ class Faucet(models.Model):
     wallet_address = models.CharField(max_length=64)
     """ The public address of the wallet """
 
-    sending_amount = models.DecimalField(max_digits=20, decimal_places=5)
+    sending_amount = models.DecimalField(max_digits=20, decimal_places=15)
     """ How much of the asset should sent on each sending request """
+
+    fee = models.DecimalField(max_digits=20, decimal_places=5)
+    """ How much to set as the sending fee """
 
     visible = models.BooleanField()
     """ Whether to include this asset or not, useful to turn off an asset """
@@ -55,7 +58,7 @@ class Faucet(models.Model):
         # the internal representation is the more human-friendly decimal version
         # but the API accepts only whole integers
         quantity = int(self.sending_amount * (10 ** balance["exponent"]))
-        fee = quantity // 1000
+        fee = int(self.fee * (10 ** balance["exponent"]))
         return wallet.transactions.create(settings.UPVEST_PASSWORD, str(self.asset_id), quantity, fee, receive_address)
 
     @property

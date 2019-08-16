@@ -28,7 +28,7 @@ class FaucetView(View):
     def get(self, request, *args, **kwargs):
         asset = kwargs.get("asset")
         if asset is not None:
-            faucet = get_object_or_404(Faucet, asset_code__iexact=asset)
+            faucet = get_object_or_404(Faucet, asset_code__iexact=asset, visible=True)
         else:
             faucet = Faucet.objects.first()
 
@@ -69,7 +69,7 @@ class FaucetView(View):
 
     def post(self, request, *args, **kwargs):
         address = request.POST.get("address")
-        faucet = get_object_or_404(Faucet, asset_code__iexact=request.POST.get("asset"))
+        faucet = get_object_or_404(Faucet, asset_code__iexact=request.POST.get("asset"), visible=True)
 
         faucets = Faucet.objects.filter(visible=True).order_by("asset_code")
         ctx = {"address": address, "faucets": faucets, "faucet": faucet}
