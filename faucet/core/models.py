@@ -40,10 +40,10 @@ class Faucet(models.Model):
     wallet_address = models.CharField(max_length=64)
     """ The public address of the wallet """
 
-    sending_amount = models.DecimalField(max_digits=20, decimal_places=15)
+    sending_amount = models.DecimalField(max_digits=40, decimal_places=15)
     """ How much of the asset should sent on each sending request """
 
-    fee = models.DecimalField(max_digits=20, decimal_places=5)
+    fee = models.DecimalField(max_digits=40, decimal_places=15)
     """ How much to set as the sending fee """
 
     visible = models.BooleanField()
