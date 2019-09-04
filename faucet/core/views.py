@@ -28,18 +28,32 @@ class FaucetView(View):
     curl = False
 
     def get_api(self):
+        """
+        This method is a shorthand for getting an Upvest API client for a
+        specific user. It uses first the OAuth ID and Secret for the application
+        itself, and then uses the user's username and password.
+        """
         return UpvestClienteleAPI(
             settings.UPVEST_OAUTH_CLIENT_ID,
             settings.UPVEST_OAUTH_CLIENT_SECRET,
             settings.UPVEST_USERNAME,
             settings.UPVEST_PASSWORD,
+            # the playground API is the default, however if you are feeling
+            # rich you could change it to use the main API and use mainnet tokens and coins
             base_url=settings.UPVEST_BACKEND,
         )
 
     def get_wallets(self):
+        """
+        Finds all the wallets that the Faucet user has then filters them into
+        a list of wallets for the assets this Faucet serves.
+        """
         asset_ids = {str(faucet.asset_id) for faucet in Faucet.objects.all()}
         wallets = {}
         for wallet in self.get_api().wallets.all():
+            # wallets can have multiple balances if they have multiple assets
+            # in them. For example, ETH and ECR20 tokens are all part of the same
+            # wallet as they are generated from the same original private key.
             for balance in wallet.balances:
                 if balance["asset_id"] in asset_ids:
                     wallets[balance["asset_id"]] = wallet

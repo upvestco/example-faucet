@@ -37,10 +37,10 @@ class Faucet(models.Model):
     """ How much to set as the sending fee """
 
     def send(self, wallet, receive_address, ip):
+        # record the request first to prevent too many requests
         DonationRequest.objects.create(address=receive_address, ip=ip)
 
         balance = self._get_balance(wallet)
-
         # the internal representation is the more human-friendly decimal version
         # but the API accepts only whole integers
         quantity = int(self.sending_amount * (10 ** balance["exponent"]))
