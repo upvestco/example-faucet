@@ -21,6 +21,28 @@ services:
     volumes:
       - rabbitdata:/var/lib/rabbitmq
 
+  faucet:
+    image: faucet:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8000:8000
+    environment:
+      - DATABASE_URL=postgres://faucet:faucet@db:5432/faucet
+      - SECRET_KEY=secret_sshhh
+      - STATIC_ROOT=/faucet/static/
+      - UPVEST_OAUTH_CLIENT_ID
+      - UPVEST_OAUTH_CLIENT_SECRET
+      - UPVEST_USERNAME
+      - UPVEST_PASSWORD
+      - UPVEST_WALLET_ID
+      - WHITELISTED_IPS=''
+      - WHITELISTED_HEADERS=''
+    depends_on:
+      - db
+      - broker
+
 volumes:
   pgdata:
   rabbitdata:

@@ -29,9 +29,8 @@ STATIC_URL = "/static/"
 STATIC_ROOT = env.str("STATIC_ROOT", os.path.join(BASE_DIR, "static"))
 
 MIDDLEWARE = [
-    "django_statsd.middleware.GraphiteRequestTimingMiddleware",
-    "django_statsd.middleware.GraphiteMiddleware",
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -104,7 +103,7 @@ WHITELISTED_IPS = env.list("WHITELISTED_IPS", default=["127.0.0.1"])
 # ---------
 # Hosting information
 # ---------
-ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=[])
+ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["*"])
 csrf_header = "X-csrf-faucet"
 CSRF_COOKIE_NAME = "faucet_csrf"
 CSRF_COOKIE_DOMAIN = env("CSRF_COOKIE_DOMAIN", default="localhost")
@@ -201,3 +200,7 @@ if USE_STATSD:
     STATSD_PATCHES = ["django_statsd.patches.db", "django_statsd.patches.cache"]
     STATSD_HOST = env.str("STATSD_HOST", "localhost")
     STATSD_PORT = env.int("STATSD_PORT", 5602)
+    MIDDLEWARE = [
+        "django_statsd.middleware.GraphiteRequestTimingMiddleware",
+        "django_statsd.middleware.GraphiteMiddleware",
+    ] + MIDDLEWARE
