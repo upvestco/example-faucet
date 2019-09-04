@@ -33,6 +33,6 @@ echo "Collecting static files"
 python manage.py collectstatic --no-input
 
 echo "Loading asset definitions"
-python manage.py loaddata assets
+python manage.py loaddata faucets
 
 gunicorn -c gunicorn.conf faucet.wsgi

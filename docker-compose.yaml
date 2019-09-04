@@ -12,14 +12,14 @@ services:
     ports:
       - 6041:5432
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - db:/var/lib/postgresql/data
 
   broker:
     image: rabbitmq:latest
     ports:
       - 60542:5672
     volumes:
-      - rabbitdata:/var/lib/rabbitmq
+      - broker:/var/lib/rabbitmq
 
   faucet:
     image: faucet:latest
@@ -37,12 +37,17 @@ services:
       - UPVEST_USERNAME
       - UPVEST_PASSWORD
       - UPVEST_WALLET_ID
-      - WHITELISTED_IPS=''
-      - WHITELISTED_HEADERS=''
+      - WHITELISTED_IPS
+      - WHITELISTED_HEADERS
+      - ALLOWED_HOSTS
+      - DEBUG
+      - USE_STATSD
+      - STATSD_HOST
+      - STATSD_PORT
     depends_on:
       - db
       - broker
 
 volumes:
-  pgdata:
-  rabbitdata:
+  db:
+  broker:
