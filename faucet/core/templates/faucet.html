@@ -64,7 +64,9 @@
             <br/> The faucet wallet currently has a balance of <strong>{{ balance }}{{ faucet.asset_code }}</strong>
             <br/>Feel free to donate to the faucet wallet, {{ wallet.address }}
           </div>
+        </div>
           {% if tx %}
+          <div class="row mt-5">
             <div class="col-md-8 alert alert-primary">
               Success! {{ faucet.sending_amount.normalize }} {{ faucet.asset_code }} has been sent to {{ address }}.
               Transaction is
@@ -72,8 +74,8 @@
                 {{ tx.txhash }}
               </a>
             </div>
+          </div>
           {% endif %}
-        </div>
 
       </div>
 
