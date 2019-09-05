@@ -71,7 +71,7 @@ class FaucetView(View):
         if asset_code is not None:
             # find the asset definition
             faucet = get_object_or_404(Faucet, asset_code__iexact=asset_code)
-            wallet = wallets.get(faucet.asset_id)
+            wallet = wallets.get(str(faucet.asset_id))
         else:
             # otherwise find the first faucet the user has a wallet for
             for faucet in Faucet.objects.all():
