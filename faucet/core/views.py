@@ -6,6 +6,7 @@ from django.http import JsonResponse, Http404
 from django.shortcuts import render, get_object_or_404
 from django.utils.timesince import timeuntil
 from django.views import View
+from decimal import Decimal
 
 from .models import greylisted, Faucet
 from upvest.clientele import UpvestClienteleAPI
@@ -83,7 +84,10 @@ class FaucetView(View):
             # if this user does not have a wallet for that asset, then can't serve anything
             raise Http404
 
-        return {"faucet": faucet, "faucets": faucets, "wallet": wallet, "wallets": wallets}
+        balance_obj = faucet.get_balance(wallet)
+        balance = Decimal(balance_obj["amount"]) / Decimal(10 ** balance_obj["exponent"])
+
+        return {"faucet": faucet, "faucets": faucets, "wallet": wallet, "wallets": wallets, "balance": balance}
 
     def get(self, request, *args, **kwargs):
         ctx = self.get_base_context()

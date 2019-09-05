@@ -40,14 +40,14 @@ class Faucet(models.Model):
         # record the request first to prevent too many requests
         DonationRequest.objects.create(address=receive_address, ip=ip)
 
-        balance = self._get_balance(wallet)
+        balance = self.get_balance(wallet)
         # the internal representation is the more human-friendly decimal version
         # but the API accepts only whole integers
         quantity = int(self.sending_amount * (10 ** balance["exponent"]))
         fee = int(self.fee * (10 ** balance["exponent"]))
         return wallet.transactions.create(settings.UPVEST_PASSWORD, str(self.asset_id), quantity, fee, receive_address)
 
-    def _get_balance(self, wallet):
+    def get_balance(self, wallet):
         for bal in wallet.balances:
             if bal["asset_id"] == str(self.asset_id):
                 return bal

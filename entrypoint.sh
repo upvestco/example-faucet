@@ -26,12 +26,12 @@ fi
 set -x
 
 echo "Migrating database"
-python manage.py migrate --no-input
+python manage.py migrate --no-input > /dev/null
 
 echo "Collecting static files"
-python manage.py collectstatic --no-input
+python manage.py collectstatic --no-input > /dev/null
 
 echo "Loading asset definitions"
-python manage.py loaddata faucets
+python manage.py loaddata faucets > /dev/null
 
 gunicorn -c gunicorn.conf faucet.wsgi

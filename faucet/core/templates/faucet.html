@@ -58,7 +58,7 @@
         <div class="row">
           <div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
             This will send {{ faucet.sending_amount.normalize }} {{ faucet.asset_code }} to the given address.
-            <br/> The faucet wallet currently has a balance of {{ faucet.balance }}{{ faucet.asset_code }}
+            <br/> The faucet wallet currently has a balance of {{ balance }}{{ faucet.asset_code }}
             <br/>Feel free to donate to the faucet wallet, {{ wallet.address }}
           </div>
           {% if tx %}

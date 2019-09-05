@@ -67,10 +67,9 @@ DJANGO_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
 ]
-LIB_APPS = ["django_celery_beat"]
 PROJECT_APPS = ["core"]
 
-INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS + LIB_APPS
+INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS
 
 if DEBUG:
     INSTALLED_APPS += ["django.contrib.admin"]

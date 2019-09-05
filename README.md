@@ -51,9 +51,9 @@ from one of the public faucets, for example for Ethereum Ropsten: https://faucet
 If you just want to run your own faucet, you don't even need to check out the
 repository. Simple set those environment variables, then run
 
-`docker run upvest/faucet`
+`docker run -p 80:8000 upvest/faucet`
 
-Then you can visit `http://localhost:8000`.
+Then you can visit the faucet at http://127.0.0.1.
 
 ## From the repository via docker-compose
 
@@ -61,7 +61,7 @@ If you have checked out this repository, simply run:
 
 `docker-compose up`
 
-Then you can visit `http://localhost:8000`.
+Then you can visit http://127.0.0.1.
 
 ## Running Django directly
 
@@ -88,3 +88,5 @@ from the Upvest API.
 Now you can run the server:
 
 `python manage.py runserver`
+
+Then you can visit http://127.0.0.1:8000

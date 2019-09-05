@@ -7,7 +7,7 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - 8000:8000
+      - 80:8000
     environment:
       - STATIC_ROOT=/faucet/static/
       - UPVEST_OAUTH_CLIENT_ID
