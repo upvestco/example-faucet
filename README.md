@@ -43,6 +43,9 @@ wallet is assumed to be a faucet!
 
 # Step 3 : How to run
 
+First, if you haven't already, you will probably want to fund your faucet wallets
+from one of the public faucets, for example for Ethereum Ropsten: https://faucet.ropsten.be
+
 ## From dockerhub
 
 If you just want to run your own faucet, you don't even need to check out the

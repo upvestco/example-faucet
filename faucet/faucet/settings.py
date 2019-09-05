@@ -11,7 +11,7 @@ env = environ.Env()
 # ---------
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DEBUG = env.bool("DEBUG", False)
-SECRET_KEY = env("SECRET_KEY")
+SECRET_KEY = env.str("SECRET_KEY", "you-should-set-this-probably")
 USE_SENTRY = env.bool("USE_SENTRY", False)
 
 # ---------
@@ -120,7 +120,19 @@ SESSION_COOKIE_SECURE = env.bool("SESSION_COOKIE_SECURE", False)
 # ---------
 # Databases
 # ---------
-DATABASES = {"default": env.db()}
+if "DATABASE_URL" in os.environ:
+    DATABASES = {"default": env.db()}
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": os.path.join(BASE_DIR, "sqlite3.db"),
+            "USER": "",
+            "PASSWORD": "",
+            "HOST": "",
+            "PORT": "",
+        }
+    }
 
 
 # ----------
