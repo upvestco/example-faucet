@@ -12,7 +12,6 @@ env = environ.Env()
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DEBUG = env.bool("DEBUG", False)
 SECRET_KEY = env.str("SECRET_KEY", "you-should-set-this-probably")
-USE_SENTRY = env.bool("USE_SENTRY", False)
 
 # ---------
 # Basic Django settings
@@ -23,8 +22,6 @@ TIME_ZONE = "UTC"
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
-# 100000000000000000
-# 100000000000000
 STATIC_URL = "/static/"
 STATIC_ROOT = env.str("STATIC_ROOT", os.path.join(BASE_DIR, "static"))
 
@@ -136,13 +133,6 @@ else:
 
 
 # ----------
-# Brokers
-# ----------
-
-# CELERY_BROKER_URL = env.str("CELERY_BROKER_URL")
-
-
-# ----------
 # Email
 # ----------
 if "EMAIL_URL" in env:
@@ -178,16 +168,6 @@ LOGGING = {
     },
 }
 
-if USE_SENTRY:
-    INSTALLED_APPS += ["raven.contrib.django.raven_compat"]
-    LOGGING["handlers"]["sentry"] = {
-        "level": "WARNING",
-        "class": "raven.contrib.django.raven_compat.handlers.SentryHandler",
-    }
-    RAVEN_CONFIG = {"dsn": env("SENTRY_DSN")}
-else:
-    RAVEN_CONFIG = {}
-
 if DEBUG:
     LOGGING["loggers"] = {
         "": {"handlers": ["verboseconsole"], "level": "INFO", "propagate": True},
@@ -195,11 +175,6 @@ if DEBUG:
     }
 else:
     handlers = ["console"]
-    # if SYSLOG_ADDRESS != "unset":
-    #     handlers += ["syslog"]
-    if USE_SENTRY:
-        handlers += ["sentry"]
-
     LOGGING["loggers"] = {
         "": {"handlers": handlers, "level": "WARN", "propagate": True},
         "faucet": {"handlers": handlers, "level": "INFO", "propagate": True},
