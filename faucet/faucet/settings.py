@@ -85,9 +85,9 @@ if DEBUG:
 
 UPVEST_OAUTH_CLIENT_ID = env.str("UPVEST_OAUTH_CLIENT_ID")
 UPVEST_OAUTH_CLIENT_SECRET = env.str("UPVEST_OAUTH_CLIENT_SECRET")
-UPVEST_BACKEND = env.str("UPVEST_BACKEND", "https://api.playground.upvest.co/")
 UPVEST_USERNAME = env.str("UPVEST_USERNAME")
 UPVEST_PASSWORD = env.str("UPVEST_PASSWORD")
+UPVEST_BACKEND = env.str("UPVEST_BACKEND", "https://api.playground.upvest.co/")
 
 # ---------
 # Greylisting

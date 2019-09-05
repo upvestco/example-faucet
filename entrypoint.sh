@@ -13,12 +13,11 @@ See the README for how to configure this faucet: https://github.com/upvestco/dem
 fi
 
 
-if [ -z "$UPVEST_USERNAME" ] || [ -z "$UPVEST_PASSWORD" ] || [ -z "$UPVEST_WALLET_ID" ]; then
+if [ -z "$UPVEST_USERNAME" ] || [ -z "$UPVEST_PASSWORD" ]; then
   echo "
 The credentials for the user and the wallet to use must be set as environment variables:
    UPVEST_USERNAME
    UPVEST_PASSWORD
-   UPVEST_WALLET_ID
 See the README for how to configure this faucet: https://github.com/upvestco/demo-faucet/README.md
 "
   exit 1
