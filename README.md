@@ -49,9 +49,18 @@ from one of the public faucets, for example for Ethereum Ropsten: https://faucet
 ## From dockerhub
 
 If you just want to run your own faucet, you don't even need to check out the
-repository. Simple set those environment variables, then run
+repository. Add those environment variables to a docker envfile, so for example `env.list`:
 
-`docker run -p 80:8000 upvest/faucet`
+```
+UPVEST_OAUTH_CLIENT_ID=...
+UPVEST_OAUTH_CLIENT_SECRET=...
+UPVEST_USERNAME=<username>
+UPVEST_PASSWORD=<password>
+```
+
+Then run:
+
+`docker run --env-file env.list -p 80:8000 upvest/faucet`
 
 Then you can visit the faucet at http://127.0.0.1.
 
