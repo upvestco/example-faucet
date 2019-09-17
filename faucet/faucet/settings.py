@@ -68,8 +68,9 @@ DJANGO_APPS = [
     "django.contrib.staticfiles",
 ]
 PROJECT_APPS = ["core"]
+LIBRARY_APPS = ["bootstrap4"]
 
-INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS
+INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS + LIBRARY_APPS
 
 if DEBUG:
     INSTALLED_APPS += ["django.contrib.admin"]
@@ -84,6 +85,7 @@ UPVEST_OAUTH_CLIENT_SECRET = env.str("UPVEST_OAUTH_CLIENT_SECRET")
 UPVEST_USERNAME = env.str("UPVEST_USERNAME")
 UPVEST_PASSWORD = env.str("UPVEST_PASSWORD")
 UPVEST_BACKEND = env.str("UPVEST_BACKEND", "https://api.playground.upvest.co/")
+UPVEST_USER_AGENT = env.str("UPVEST_USER_AGENT", "upvest-faucet/default")
 
 # ---------
 # Greylisting

@@ -20,6 +20,8 @@ RUN apk del build-deps
 
 USER faucet
 
+ENV UPVEST_USER_AGENT="upvest-faucet/docker"
+
 COPY --chown=faucet:faucet faucet /faucet/app
 WORKDIR /faucet/app
 COPY --chown=faucet:faucet entrypoint.sh /faucet/entrypoint.sh

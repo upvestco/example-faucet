@@ -1,8 +1,9 @@
 Django==2.2.4
+django-bootstrap4==1.0.1
 django-environ==0.4.5
 django-statsd-mozilla==0.4.0
 gunicorn==19.9.0
 PyYAML==5.1.1
 requests==2.21.0
-upvest>=0.0.5
+upvest>=0.0.8
 whitenoise==4.1.3

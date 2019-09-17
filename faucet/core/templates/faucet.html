@@ -1,25 +1,27 @@
-{% load static %}
+{% load bootstrap4 %}
+{% load staticfiles %}
+
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Upvest Demo App : Faucets</title>
+    <title>Upvest Examples : Wallet</title>
     <link rel="icon" href="{% static 'favicon.ico' %}" type="image/png" sizes="16x16">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    {% bootstrap_css %}
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {% bootstrap_javascript jquery='full' %}
 </head>
 <body>
 
-    <nav class="navbar static-top mb-5">
-      <div class="container text-white">
-        <div class="col-md-8">
-          <h1>Upvest Demo App : Faucets</h1>
-        </div>
-      </div>
-    </nav>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">Upvest Example Faucet</a>
+  </nav>
 
-      <div class="container">
+  {% bootstrap_messages %}
+
+  <div class="container mt-5">
+
         <div class="row mb-5">
           <div class="col-md-8">
             {% for faucet in faucets %}
@@ -32,16 +34,6 @@
             <h3 class="mb-5">Use this faucet to get some {{ faucet.asset_code }}!</h3>
             <p>Upvest asset id: {{ faucet.asset_id }}</p>
           </div>
-          {% if messages %}
-            <div class="col-md-8">
-              {% for message in messages %}
-                <div class="alert alert-{{ message.tags }} {% if message.tags == 'error' %}alert-danger{% endif %}">
-                  {{ message }}
-                </div>
-              {% endfor %}
-            </div>
-          </div>
-          {% endif %}
           <div class="col-md-8">
             <form method="post">
               {% csrf_token %}

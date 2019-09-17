@@ -42,6 +42,7 @@ class FaucetView(View):
             # the playground API is the default, however if you are feeling
             # rich you could change it to use the main API and use mainnet tokens and coins
             base_url=settings.UPVEST_BACKEND,
+            user_agent=settings.UPVEST_USER_AGENT,
         )
 
     def get_wallets(self):
