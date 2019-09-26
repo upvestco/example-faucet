@@ -1,4 +1,4 @@
-FROM python:3.7.4-alpine3.9
+FROM python:3.7.4-alpine3.10
 
 RUN apk add --no-cache --virtual build-deps build-base
 RUN apk add libffi-dev openssl-dev
