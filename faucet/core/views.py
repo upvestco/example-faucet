@@ -118,7 +118,7 @@ class FaucetView(View):
                 return JsonResponse(
                     {
                         "message": "Request received successfully. %s will be sent to %s" % (amount, address),
-                        "tx": tx.txhash,
+                        "tx": tx.id,
                     },
                     status=200,
                 )

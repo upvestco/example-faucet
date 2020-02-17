@@ -45,7 +45,7 @@ class Faucet(models.Model):
         # but the API accepts only whole integers
         quantity = int(self.sending_amount * (10 ** balance["exponent"]))
         fee = int(self.fee * (10 ** balance["exponent"]))
-        return wallet.transactions.create(settings.UPVEST_PASSWORD, str(self.asset_id), quantity, fee, receive_address)
+        return wallet.transactions.create(settings.UPVEST_PASSWORD, str(self.asset_id), quantity, fee, receive_address, asynchronous=True)
 
     def get_balance(self, wallet):
         for bal in wallet.balances:
