@@ -60,10 +60,10 @@
           {% if tx %}
           <div class="row mt-5">
             <div class="col-md-8 alert alert-primary">
-              Success! {{ faucet.sending_amount.normalize }} {{ faucet.asset_code }} has been sent to {{ address }}.
-              Transaction is
-              <a href='https://ropsten.etherscan.io/tx/{{ tx.txhash }}'>
-                {{ tx.txhash }}
+              Success! {{ faucet.sending_amount.normalize }} {{ faucet.asset_code }} has been sent to your address.
+              View your transactions here
+              <a href='https://ropsten.etherscan.io/address/{{ address }}'>
+                {{ address }}
               </a>
             </div>
           </div>
